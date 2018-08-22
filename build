@@ -1,0 +1,5 @@
+#!/bin/sh
+
+docker build -t centos-repo:latest ./centos-repo-image
+
+docker build -t centos-repotest:latest ./centos-repotest-image

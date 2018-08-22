@@ -1,0 +1,5 @@
+[epel]
+name=Extra Packages for Enterprise Linux 7 - $basearch
+baseurl=http://repo/epel/7/$basearch/ 
+gpgcheck=1
+gpgkey=http://repo/epel/RPM-GPG-KEY-EPEL-7

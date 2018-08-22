@@ -1,0 +1,27 @@
+#!/bin/sh
+
+basepath=$(cd `dirname $0`; pwd)
+echo $basepath
+
+repodir_in_container="/var/www/html/repos"
+
+rsync -avrt rsync://mirrors.ustc.edu.cn/centos/RPM-GPG-KEY-CentOS-7 ${repodir_in_container}/centos
+rsync -avrt rsync://mirrors.ustc.edu.cn/epel/RPM-GPG-KEY-EPEL-7 ${repodir_in_container}/epel
+
+rsync -avrt rsync://mirrors.ustc.edu.cn/centos/7/os/x86_64/ \
+      --exclude-from=${repodir_in_container}/exclude_centos.list \
+      ${repodir_in_container}/centos/7/os/x86_64/   # CentOS Base Repo
+
+rsync -avrt rsync://mirrors.ustc.edu.cn/centos/7/updates/x86_64/ \
+      --exclude-from=${repodir_in_container}/exclude_centos_update.list \
+      ${repodir_in_container}/centos/7/updates/x86_64/   # CentOS Update Repo 
+
+rsync -avrt rsync://mirrors.ustc.edu.cn/epel/7/x86_64/ \
+      --exclude-from=${repodir_in_container}/exclude_epel.list \
+      ${repodir_in_container}/epel/7/x86_64/   # CentOS Epel Repo
+
+createrepo --update /var/www/html/repos/centos/7/os/x86_64/   # CentOS Base Repo
+
+createrepo --update /var/www/html/repos/centos/7/updates/x86_64/   # CentOS Update Repo
+
+createrepo --update /var/www/html/repos/epel/7/x86_64/   # EPEL 7 Repo

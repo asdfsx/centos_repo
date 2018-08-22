@@ -1,0 +1,26 @@
+#!/bin/sh
+
+basepath=$(cd `dirname $0`; pwd)
+echo $basepath
+
+repodir_in_container="/var/www/html/repos"
+repodir_in_host="${basepath}/repos"
+echo $repodir_in_host
+
+function usage(){
+  echo "Usage:"
+  echo "    ./repo start            start centos repo server"
+  echo "    ./repo update_repo      update resource"
+  echo "    ./repo test             test repo"
+}
+
+if [ "$1" == "start" ]; then
+  docker run -d --rm -v ${repodir_in_host}:${repodir_in_container} -p 80:80 --name CentosRepo centos-repo
+elif [ "$1" == "sync" ]; then
+  docker run -it --rm -v ${repodir_in_host}:${repodir_in_container} centos-repo /usr/local/sbin/update_repo
+elif [ "$1" == "test" ]; then
+  docker run -it --rm --link CentosRepo:repo centos-repotest yum clean all
+else
+  usage
+fi 
+

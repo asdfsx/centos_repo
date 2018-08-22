@@ -8,4 +8,4 @@
 ./repo start
 
 ### Test Centos Repo Server
-./repo_test
+./repo test

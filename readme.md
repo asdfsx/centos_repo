@@ -9,3 +9,5 @@
 
 ### Test Centos Repo Server
 ./repo test
+
+https://deviant.engineer/2016/03/repo-centos7/

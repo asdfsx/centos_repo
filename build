@@ -3,3 +3,7 @@
 docker build -t centos-repo:latest ./centos-repo-image
 
 docker build -t centos-repotest:latest ./centos-repotest-image
+
+docker build -t ubuntu-aptcache:latest ./ubuntu-aptcache-image
+
+docker build -t ubuntu-aptcachetest:latest ./ubuntu-aptcachetest-image

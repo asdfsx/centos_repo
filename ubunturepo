@@ -1,0 +1,27 @@
+#!/bin/sh
+
+basepath=$(cd `dirname $0`; pwd)
+echo $basepath
+
+repodir_in_container="/var/cache/apt-cacher-ng"
+repodir_in_host="${basepath}/aptcache"
+echo $repodir_in_host
+
+function usage(){
+  echo "Usage:"
+  echo "    ./ubunturepo start            start ubuntu aptcacher server"
+  echo "    ./ubunturepo stop             stop ubuntu aptcacher server"
+  echo "    ./ubunturepo test             test repo"
+}
+
+if [ "$1" == "start" ]; then
+  docker run -d --rm -v ${repodir_in_host}:${repodir_in_container} -p 3142:3142 --name UbuntuRepo ubuntu-aptcache
+elif [ "$1" == "stop" ]; then
+  docker stop UbuntuRepo
+elif [ "$1" == "test" ]; then
+  apngip=`docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' UbuntuRepo`
+  docker run -it --rm --env http_proxy=${apngip} --link UbuntuRepo:repo ubuntu-aptcachetest 
+else
+  usage
+fi 
+

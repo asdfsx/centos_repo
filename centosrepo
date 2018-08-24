@@ -9,13 +9,16 @@ echo $repodir_in_host
 
 function usage(){
   echo "Usage:"
-  echo "    ./repo start            start centos repo server"
-  echo "    ./repo update_repo      update resource"
-  echo "    ./repo test             test repo"
+  echo "    ./centosrepo start            start centos repo server"
+  echo "    ./centosrepo stop             stop centos repo server"
+  echo "    ./centosrepo update_repo      update resource"
+  echo "    ./centosrepo test             test repo"
 }
 
 if [ "$1" == "start" ]; then
   docker run -d --rm -v ${repodir_in_host}:${repodir_in_container} -p 80:80 --name CentosRepo centos-repo
+elif [ "$1" == "stop" ]; then
+  docker stop CentosRepo
 elif [ "$1" == "sync" ]; then
   docker run -it --rm -v ${repodir_in_host}:${repodir_in_container} centos-repo /usr/local/sbin/update_repo
 elif [ "$1" == "test" ]; then
